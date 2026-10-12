@@ -1,7 +1,7 @@
 import { i as __toESM } from "../_runtime.mjs";
 import { K as require_react, b as require_jsx_runtime } from "../_libs/@tanstack/react-router+[...].mjs";
 import { a as Terminal, c as LayoutDashboard, d as FileText, f as Download, i as TriangleAlert, l as Folder, m as ChevronLeft, n as X, o as MessageSquare, p as Clock, r as Users, s as Lock, t as Zap, u as FolderTree } from "../_libs/lucide-react.mjs";
-//#region node_modules/.nitro/vite/services/ssr/assets/routes-DvlEus5F.js
+//#region node_modules/.nitro/vite/services/ssr/assets/routes-BQheKBhu.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
 var ORION_API = "https://orion-terminal.sinalmudo.workers.dev";
@@ -2691,7 +2691,7 @@ function Explorer({ activeId, visible, onOpenDoc, onNavigate }) {
 }
 function HeaderBar({ adminOpen, onToggleAdmin }) {
 	const { adminToken, clock, link } = useOrion();
-	const [now, setNow] = (0, import_react.useState)(() => /* @__PURE__ */ new Date());
+	const [now, setNow] = (0, import_react.useState)(null);
 	(0, import_react.useEffect)(() => {
 		setNow(fictionalNow(clock));
 		const id = window.setInterval(() => setNow(fictionalNow(clock)), 1e3);
@@ -2717,14 +2717,14 @@ function HeaderBar({ adminOpen, onToggleAdmin }) {
 					className: "text-right",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "text-sm text-bright tabular-nums",
-						children: now.toLocaleTimeString("pt-BR")
+						children: now ? now.toLocaleTimeString("pt-BR") : "--:--:--"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "hidden text-xs text-dim sm:block",
-						children: [now.toLocaleDateString("pt-BR", {
+						children: [now ? now.toLocaleDateString("pt-BR", {
 							day: "2-digit",
 							month: "2-digit",
 							year: "numeric"
-						}), clock?.fictionalTime && !clock.running ? " · pausado" : ""]
+						}) : "", clock?.fictionalTime && !clock.running ? " · pausado" : ""]
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -3089,10 +3089,30 @@ function Shell() {
 		fetchDoc(doc.id, null);
 	}
 	const showTransfer = download && download.id !== dismissed;
+	const tabs = [
+		{
+			id: "files",
+			label: "Arquivos"
+		},
+		{
+			id: "read",
+			label: "Leitura"
+		},
+		{
+			id: "chat",
+			label: "Canal"
+		}
+	];
+	if (!playerName) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "h-dvh overflow-hidden bg-bg text-fg",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoginGate, {}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "scanlines pointer-events-none fixed inset-0 z-50",
+			"aria-hidden": "true"
+		})]
+	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "flex h-dvh flex-col overflow-hidden bg-bg text-fg",
 		children: [
-			!playerName ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoginGate, {}) : null,
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HeaderBar, {
 				adminOpen,
 				onToggleAdmin: () => setAdminOpen((open) => !open)
@@ -3124,20 +3144,7 @@ function Shell() {
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
 				className: "grid shrink-0 grid-cols-3 border-t border-line bg-panel md:hidden",
-				children: [
-					{
-						id: "files",
-						label: "Arquivos"
-					},
-					{
-						id: "read",
-						label: "Leitura"
-					},
-					{
-						id: "chat",
-						label: "Canal"
-					}
-				].map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+				children: tabs.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 					type: "button",
 					onClick: () => setTab(item.id),
 					className: cx("term-btn min-h-11", tab === item.id ? "bg-cyan/10 text-cyan" : "text-dim"),
